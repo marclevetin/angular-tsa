@@ -251,31 +251,33 @@
 
                 // Bar Chart
 
-                vt.barChartLabels = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July"
-                ];
+                vt.barChartLabels = [];
 
-                vt.barChartSeries = ["New Users", "Global Quizz Results in %"];
+                vt.barChartSeries = ["Average", "Standard Deviation"];
 
                 vt.barChartCharts = [];
-
                 // API Request
                 $http(
                     {
                         method: 'GET',
-                        url: 'http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2'
+                        url: './data/averageClaims.js'
                     })
                     .then(function (data) {
-                        var array = data.data // TODO: not sure why the $http returns a different object here than in the tutorial.  Investigate later.
+                        var array = data.data;
+
+                        var averageData = [];
+                        var stdDevData = [];
                         angular.forEach(array, function (barChartData) {
-                            vt.barChartCharts.push(barChartData.chart);
+                            
+                            // add to labels
+                            vt.barChartLabels.push(barChartData.airportCode);
+                            // add data to series 1 (average)
+                            averageData.push(barChartData.averageClaim);
+                            // add data to series 2 (stdDev)
+                            stdDevData.push(barChartData.standardDeviation);
                         });
+
+                        vt.barChartCharts = [averageData, stdDevData];
                     });
 
                 vt.barChartOptions = {
