@@ -1,0 +1,17 @@
+<!-- Value lost graph -->
+<div class="row">
+    <div class="col s12">
+        <div ng-controller="linegraphs as vt">
+            <h2>Value Lost per Month</h2>
+            <p>This chart shows the total value lost per month, by airline. The average monthly loss is included for context.</p>
+            {{test2}}
+
+
+            <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
+                chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+            </canvas>
+            <div class="divider"></div>
+        </div>
+    </div>
+</div>
+<!-- End Value lost graph -->
