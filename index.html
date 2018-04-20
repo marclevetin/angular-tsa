@@ -21,19 +21,20 @@
     <nav>
         <div class="nav-wrapper" ng-controller="nav">
             <a href="#!" class="brand-logo"><i class="large material-icons">airplanemode_active</i>TSA Claims Data</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+            <a href="#!" data-target="mobile-demo" class="sidenav-trigger">
                 <i class="material-icons">menu</i>
             </a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <a href="#">Value Lost per Month</a>
+                    <a href="#!/valuelost">Value Lost per Month</a>
                 </li>
                 <li>
-                    <a href="#">Average Claims per Month</a>
+                    <a href="#!/averageclaims">Average Claims per Month</a>
                 </li>
             </ul>
         </div>
     </nav>
+
     <!-- Sidenav appears on small screens -->
     <ul class="sidenav" id="mobile-demo">
         <li>
@@ -45,41 +46,11 @@
     </ul>    
 <!-- End navigation bar -->
 
-<!-- Value lost graph -->
-<div class="row">
-    <div class="col s12">
-        <div ng-controller="linegraphs as vt">
-            <h2>Value Lost per Month</h2>
-            <p>This chart shows the total value lost per month, by airline.  The average monthly loss is included for context.</p>
-            {{test2}}
+<!-- Views go here -->
+    <ng-view></ng-view>
+<!-- end -->
 
 
-            <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
-                chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
-            </canvas>
-            <div class="divider"></div>
-        </div>
-    </div>
-</div>
-<!-- End Value lost graph -->
-<!-- Average Claims graph -->
-
-<div class="row">
-    <div class="col s12">
-        <div ng-controller="barchart as vt">
-            <h2>Average Claims per Month</h2>
-            <p>This chart shows the average claim per month, by airline code. Each bar shows the arithmatic mean and standard deviation.</p>
-            {{test2}}
-
-            <canvas chart-options="vt.barChartOptions" id="bar" class="chart chart-bar" chart-data="vt.barChartCharts" chart-labels="vt.barChartLabels"
-                chart-legend="true" chart-series="vt.barChartSeries" chart-colours="vt.barChartColours">
-            </canvas>
-            <div class="divider"></div>
-        </div>
-    </div>
-</div>
-
-<!-- End Average Claims graph -->
 <!-- Footer -->
     <footer class="page-footer">
         <div class="container">
@@ -115,135 +86,152 @@
     
 <!-- Javascript files -->
     <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/angular-route/angular-route.min.js"></script>
     <script src="./node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="./node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
     <script>
-        var app = angular.module('app', ['chart.js']);
+        var app = angular.module('app', ['chart.js', 'ngRoute']);
 
-        app.controller('nav', function($scope) {
-            $scope.test = "hi"
+        app.config(function($routeProvider) {
+            $routeProvider
+            .when('/', {
+                templateUrl: 'views/home.html',
+                
+            })
+            .when('/valuelost', {
+                templateUrl: 'views/valuelost.html',
+                
+            })
+            .when('/averageclaims', {
+                    templateUrl: 'views/averageclaims.html',
+
+            })
         });
 
-        app.controller('linegraphs', function ($scope,$http) {
-            $scope.test2 = "Remember to remove this.";
+        app.controller('nav', function ($scope) {
+                $scope.test = "hi"
+        });
 
-            var vt = this;
+        app.controller('linegraphs', function ($scope, $http) {
+                $scope.test2 = "Remember to remove this.";
 
-            // Line Chart
+                var vt = this;
 
-            vt.chartLineLabels = [
-                "Jan 2010",
-                "Feb 2010",
-                "Mar 2010",
-                "Apr 2010",
-                "May 2010",
-                "Jun 2010",
-                "Jul 2010",
-                "Aug 2010",
-                "Sept 2010",
-                "Oct 2010",
-                "Nov 2010",
-                "Dec 2010",
-                "Jan 2011",
-                "Feb 2011",
-                "Mar 2011",
-                "Apr 2011",
-                "May 2011",
-                "Jun 2011",
-                "Jul 2011",
-                "Aug 2011",
-                "Sept 2011",
-                "Oct 2011",
-                "Nov 2011",
-                "Dec 2011",
-                "Jan 2012",
-                "Feb 2012",
-                "Mar 2012",
-                "Apr 2012",
-                "May 2012",
-                "Jun 2012",
-                "Jul 2012",
-                "Aug 2012",
-                "Sept 2012",
-                "Oct 2012",
-                "Nov 2012",
-                "Dec 2012",
-                "Jan 2013",
-                "Feb 2013",
-                "Mar 2013",
-                "Apr 2013",
-                "May 2013",
-                "Jun 2013",
-                "Jul 2013",
-                "Aug 2013",
-                "Sept 2013",
-                "Oct 2013",
-                "Nov 2013",
-                "Dec 2013",
-            ];
+                // Line Chart
 
-            vt.chartLineSeries = [];
+                vt.chartLineLabels = [
+                    "Jan 2010",
+                    "Feb 2010",
+                    "Mar 2010",
+                    "Apr 2010",
+                    "May 2010",
+                    "Jun 2010",
+                    "Jul 2010",
+                    "Aug 2010",
+                    "Sept 2010",
+                    "Oct 2010",
+                    "Nov 2010",
+                    "Dec 2010",
+                    "Jan 2011",
+                    "Feb 2011",
+                    "Mar 2011",
+                    "Apr 2011",
+                    "May 2011",
+                    "Jun 2011",
+                    "Jul 2011",
+                    "Aug 2011",
+                    "Sept 2011",
+                    "Oct 2011",
+                    "Nov 2011",
+                    "Dec 2011",
+                    "Jan 2012",
+                    "Feb 2012",
+                    "Mar 2012",
+                    "Apr 2012",
+                    "May 2012",
+                    "Jun 2012",
+                    "Jul 2012",
+                    "Aug 2012",
+                    "Sept 2012",
+                    "Oct 2012",
+                    "Nov 2012",
+                    "Dec 2012",
+                    "Jan 2013",
+                    "Feb 2013",
+                    "Mar 2013",
+                    "Apr 2013",
+                    "May 2013",
+                    "Jun 2013",
+                    "Jul 2013",
+                    "Aug 2013",
+                    "Sept 2013",
+                    "Oct 2013",
+                    "Nov 2013",
+                    "Dec 2013",
+                ];
 
-            vt.chartLineCharts = [];
+                vt.chartLineSeries = [];
 
-            // API Request
-            $http(
-                {
-                    method: 'GET',
-                    url: './data/valueLost.js'
-                })
-                .then(function (data) {
-                    var array = data.data
-                    // prepares average series
-                    var averageSeriesName = "Average";
-                    var averageDataObject = {};
+                vt.chartLineCharts = [];
 
-                    angular.forEach(array, function (chartLineData) {
-                        
-                        // adds airline to chart series
-                        vt.chartLineSeries.push(chartLineData.Airline);
-
-                        //this removes Airline from the array.
-                        sortedObjectKeys = Object.keys(chartLineData).sort();
-                        sortedObjectKeys.pop(); 
-
-                        // assembles data for the Airline
-                        let thisAirlineArray = [];
-                        angular.forEach(sortedObjectKeys, function(key){
-                            // average series
-                            if (averageDataObject[key] === undefined) {
-                                averageDataObject[key] = chartLineData[key];
-                            } else {
-                                averageDataObject[key] += chartLineData[key];
-                            }
-
-                            //  airline series
-                            thisAirlineArray.push(chartLineData[key]);
-                        })
-                        
-                        vt.chartLineCharts.push(thisAirlineArray);
-                    });
-                    // adds average series
-                    vt.chartLineSeries.push(averageSeriesName);
-
-                    var averageDataArray = Object.values(averageDataObject);
-
-                    angular.forEach(averageDataArray, function(value, key) {
-                        averageDataArray[key] = value / vt.chartLineSeries.length - 1;
+                // API Request
+                $http(
+                    {
+                        method: 'GET',
+                        url: './data/valueLost.js'
                     })
+                    .then(function (data) {
+                        var array = data.data
+                        // prepares average series
+                        var averageSeriesName = "Average";
+                        var averageDataObject = {};
 
-                    vt.chartLineCharts.push(averageDataArray);
-                });
+                        angular.forEach(array, function (chartLineData) {
 
-            vt.chartLineOptions = {
-                maintainAspectRatio: false,
-                responsive: true
-            };
+                            // adds airline to chart series
+                            vt.chartLineSeries.push(chartLineData.Airline);
 
-            vt.chartLineColours = ["#494750", "#cc3321"];
-        });
+                            //this removes Airline from the array.
+                            sortedObjectKeys = Object.keys(chartLineData).sort();
+                            sortedObjectKeys.pop();
 
-        app.controller('barchart', function ($scope, $http) {
+                            // assembles data for the Airline
+                            let thisAirlineArray = [];
+                            angular.forEach(sortedObjectKeys, function (key) {
+                                // average series
+                                if (averageDataObject[key] === undefined) {
+                                    averageDataObject[key] = chartLineData[key];
+                                } else {
+                                    averageDataObject[key] += chartLineData[key];
+                                }
+
+                                //  airline series
+                                thisAirlineArray.push(chartLineData[key]);
+                            })
+
+                            vt.chartLineCharts.push(thisAirlineArray);
+                        });
+                        // adds average series
+                        vt.chartLineSeries.push(averageSeriesName);
+
+                        var averageDataArray = Object.values(averageDataObject);
+
+                        angular.forEach(averageDataArray, function (value, key) {
+                            averageDataArray[key] = value / vt.chartLineSeries.length - 1;
+                        })
+
+                        vt.chartLineCharts.push(averageDataArray);
+                    });
+
+                vt.chartLineOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true
+                };
+
+                vt.chartLineColours = ["#494750", "#cc3321"];
+            });
+
+            app.controller('barchart', function ($scope, $http) {
                 $scope.test2 = "Remember to remove this.";
 
                 var vt = this;
@@ -267,7 +255,7 @@
                         var averageData = [];
                         var stdDevData = [];
                         angular.forEach(array, function (barChartData) {
-                            
+
                             // add to labels
                             vt.barChartLabels.push(barChartData.airportCode);
                             // add data to series 1 (average)
@@ -287,7 +275,8 @@
                 vt.barChartColours = ["#494750", "#cc3321"];
 
             });
-       
+
+            
     </script>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
