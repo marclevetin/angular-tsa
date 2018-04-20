@@ -53,22 +53,72 @@
         </li>
     </ul>    
 <!-- End navigation bar -->
-    <div ng-controller="graphs">
+    <div ng-controller="graphs as vt">
         <p>graphs</p>
         {{test2}}
+
+        <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
+            chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+        </canvas>
     </div>
     <p>footer</p>
+    
+<!-- Javascript files -->
     <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="./node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
     <script>
-        var app = angular.module('app', []);
+        var app = angular.module('app', ['chart.js']);
 
         app.controller('nav', function($scope) {
             $scope.test = "hi"
         });
 
-        app.controller('graphs', function ($scope) {
-            $scope.test2 = "mom"
+        app.controller('graphs', function ($scope,$http) {
+            $scope.test2 = "mom";
+
+            var vt = this;
+
+            // Line Chart
+
+            vt.chartLineLabels = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July"
+            ];
+
+            vt.chartLineSeries = ["New Users", "Global Quizz Results in %"];
+
+            vt.chartLineCharts = [];
+
+            // API Request
+            $http(
+                {
+                    method: 'GET',
+                    url: 'http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2'
+                })
+                .then(function (data) {
+                    var array = data.data // TODO: not sure why the $http returns a different object here than in the tutorial.  Investigate later.
+                    angular.forEach(array, function (chartLineData) {
+                        vt.chartLineCharts.push(chartLineData.chart);
+                    });
+                    console.log(vt.chartLineCharts);
+                });
+
+            vt.chartLineOptions = {
+                maintainAspectRatio: false,
+                responsive: true
+            };
+
+            vt.chartLineColours = ["#494750", "#cc3321"];
+
         });
+
+        
     </script>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
