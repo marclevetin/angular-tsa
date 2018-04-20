@@ -9,6 +9,9 @@
     
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- jQuery is used for the file upload -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>TSA Claims Data</title>
     <meta charset="UTF-8">
 </head>
@@ -55,6 +58,16 @@
         </li>
     </ul>    
 <!-- End navigation bar -->
+<!-- Upload file -->
+<div ng-controller="uploadData">
+    <p>Import TSA Data in CSV format</p>
+    <input type="file" data-file-reader-directive="fileContent" accept=".csv" />
+    <input type='button' value="Upload" ng-click="uploadFile()">
+
+    <div>{{ fileData }}</div>
+</div>
+<!-- End Upload file -->
+
 <!-- Value lost graph -->
 <div class="row">
     <div class="col s12">
@@ -219,6 +232,72 @@
 
             });
 
+        app.controller("uploadData", [
+                "$scope",
+                "readFileData",
+                function ($scope, readFileData) {
+                    $scope.fileDataObj = {};
+
+                    $scope.uploadFile = function () {
+                        if ($scope.fileContent) {
+                            $scope.fileDataObj = readFileData.processData($scope.fileContent);
+
+                            $scope.fileData = JSON.stringify($scope.fileDataObj);
+                        }
+                    };
+                }
+            ])
+
+        app.directive("fileReaderDirective", function () {
+                return {
+                    restrict: "A",
+                    scope: {
+                        fileReaderDirective: "="
+                    },
+                    link: function (scope, element) {
+                        $(element).on("change", function (changeEvent) {
+                            var files = changeEvent.target.files;
+                            if (files.length) {
+                                var r = new FileReader();
+                                r.onload = function (e) {
+                                    var contents = e.target.result;
+                                    scope.$apply(function () {
+                                        scope.fileReaderDirective = contents;
+                                    });
+                                };
+                                r.readAsText(files[0]);
+                            }
+                        });
+                    }
+                };
+            })
+
+        app.factory("readFileData", function () {
+                return {
+                    processData: function (csv_data) {
+                        var record = csv_data.split(/\r\n|\n/);
+                        var headers = record[0].split(",");
+                        var lines = [];
+                        var json = {};
+
+                        for (var i = 0; i < record.length; i++) {
+                            var data = record[i].split(",");
+                            if (data.length == headers.length) {
+                                var tarr = [];
+                                for (var j = 0; j < headers.length; j++) {
+                                    tarr.push(data[j]);
+                                }
+                                lines.push(tarr);
+                            }
+                        }
+
+                        for (var k = 0; k < lines.length; ++k) {
+                            json[k] = lines[k];
+                        }
+                        return json;
+                    }
+                };
+            });
         
     </script>
     <!--JavaScript at end of body for optimized loading-->
