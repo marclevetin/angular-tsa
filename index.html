@@ -54,9 +54,10 @@
         </li>
     </ul>    
 <!-- End navigation bar -->
+<!-- Value lost graph -->
 <div class="row">
     <div class="col s12">
-        <div ng-controller="graphs as vt">
+        <div ng-controller="linegraphs as vt">
             <h2>Value Lost per Month</h2>
             <p>This chart shows the total value lost per month, by airline.  The average monthly loss is included for context.</p>
             {{test2}}
@@ -68,6 +69,26 @@
         </div>
     </div>
 </div>
+<!-- End Value lost graph -->
+<!-- Average Claims graph -->
+
+<div class="row">
+    <div class="col s12">
+        <div ng-controller="barchart as vt">
+            <h2>Average Claims per Month</h2>
+            <p>This chart shows the average claim per month, by airline code. Each bar shows the arithmatic mean and standard deviation.</p>
+            {{test2}}
+
+            <canvas chart-options="vt.barChartOptions" id="bar" class="chart chart-bar" chart-data="vt.barChartCharts" chart-labels="vt.barChartLabels"
+                chart-legend="true" chart-series="vt.barChartSeries" chart-colours="vt.barChartColours">
+            </canvas>
+            <div class="divider"></div>
+        </div>
+    </div>
+</div>
+
+<!-- End Average Claims graph -->
+
     <p>footer</p>
     </div>
     
@@ -82,8 +103,8 @@
             $scope.test = "hi"
         });
 
-        app.controller('graphs', function ($scope,$http) {
-            $scope.test2 = "mom";
+        app.controller('linegraphs', function ($scope,$http) {
+            $scope.test2 = "Remember to remove this.";
 
             var vt = this;
 
@@ -114,7 +135,6 @@
                     angular.forEach(array, function (chartLineData) {
                         vt.chartLineCharts.push(chartLineData.chart);
                     });
-                    console.log(vt.chartLineCharts);
                 });
 
             vt.chartLineOptions = {
@@ -125,6 +145,49 @@
             vt.chartLineColours = ["#494750", "#cc3321"];
 
         });
+
+        app.controller('barchart', function ($scope, $http) {
+                $scope.test2 = "Remember to remove this.";
+
+                var vt = this;
+
+                // Bar Chart
+
+                vt.barChartLabels = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July"
+                ];
+
+                vt.barChartSeries = ["New Users", "Global Quizz Results in %"];
+
+                vt.barChartCharts = [];
+
+                // API Request
+                $http(
+                    {
+                        method: 'GET',
+                        url: 'http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2'
+                    })
+                    .then(function (data) {
+                        var array = data.data // TODO: not sure why the $http returns a different object here than in the tutorial.  Investigate later.
+                        angular.forEach(array, function (barChartData) {
+                            vt.barChartCharts.push(barChartData.chart);
+                        });
+                    });
+
+                vt.barChartOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true
+                };
+
+                vt.barChartColours = ["#494750", "#cc3321"];
+
+            });
 
         
     </script>
