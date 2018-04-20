@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html>
-    <head lang-"en">
-        <title>TSA Claims Data</title>
-        <meta charset="UTF-8">
-    </head>
-    <body>
+<html ng-app="app">
+
+<head lang- "en">
+    <title>TSA Claims Data</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div ng-controller="nav">
         <p>navbar with file upload</p>
+        {{test}}
+    </div>
+    <div ng-controller="graphs">
         <p>graphs</p>
-        <p>footer</p>
-    </body>
+        {{test2}}
+    </div>
+    <p>footer</p>
+    <script src="./node_modules/angular/angular.js"></script>
+    <script>
+        var app = angular.module('app', []);
+
+        app.controller('nav', function($scope) {
+            $scope.test = "hi"
+        });
+
+        app.controller('graphs', function ($scope) {
+            $scope.test2 = "mom"
+        });
+    </script>
+</body>
+
 </html>
