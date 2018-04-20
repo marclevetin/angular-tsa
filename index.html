@@ -10,8 +10,6 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- jQuery is used for the file upload -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>TSA Claims Data</title>
     <meta charset="UTF-8">
 </head>
@@ -28,16 +26,10 @@
             </a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <a href="#">{{4+4}}</a>
-                </li>
-                <li>
                     <a href="#">Value Lost per Month</a>
                 </li>
                 <li>
                     <a href="#">Average Claims per Month</a>
-                </li>
-                <li>
-                    <a href="#">Upload file</a>
                 </li>
             </ul>
         </div>
@@ -45,28 +37,13 @@
     <!-- Sidenav appears on small screens -->
     <ul class="sidenav" id="mobile-demo">
         <li>
-            <a href="#">{{4+4}}</a>
-        </li>
-        <li>
             <a href="#">Value Lost per Month</a>
         </li>
         <li>
             <a href="#">Average Claims per Month</a>
         </li>
-        <li>
-            <a href="#">Upload file</a>
-        </li>
     </ul>    
 <!-- End navigation bar -->
-<!-- Upload file -->
-<div ng-controller="uploadData">
-    <p>Import TSA Data in CSV format</p>
-    <input type="file" data-file-reader-directive="fileContent" accept=".csv" />
-    <input type='button' value="Upload" ng-click="uploadFile()">
-
-    <div>{{ fileData }}</div>
-</div>
-<!-- End Upload file -->
 
 <!-- Value lost graph -->
 <div class="row">
@@ -75,6 +52,7 @@
             <h2>Value Lost per Month</h2>
             <p>This chart shows the total value lost per month, by airline.  The average monthly loss is included for context.</p>
             {{test2}}
+
 
             <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
                 chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
@@ -136,6 +114,7 @@
     </div>
     
 <!-- Javascript files -->
+    <script src="./data/valueLost.js"></script>
     <script src="./node_modules/angular/angular.js"></script>
     <script src="./node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="./node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
@@ -154,16 +133,57 @@
             // Line Chart
 
             vt.chartLineLabels = [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July"
+                "Jan 2010",
+                "Feb 2010",
+                "Mar 2010",
+                "Apr 2010",
+                "May 2010",
+                "Jun 2010",
+                "Jul 2010",
+                "Aug 2010",
+                "Sept 2010",
+                "Oct 2010",
+                "Nov 2010",
+                "Dec 2010",
+                "Jan 2011",
+                "Feb 2011",
+                "Mar 2011",
+                "Apr 2011",
+                "May 2011",
+                "Jun 2011",
+                "Jul 2011",
+                "Aug 2011",
+                "Sept 2011",
+                "Oct 2011",
+                "Nov 2011",
+                "Dec 2011",
+                "Jan 2012",
+                "Feb 2012",
+                "Mar 2012",
+                "Apr 2012",
+                "May 2012",
+                "Jun 2012",
+                "Jul 2012",
+                "Aug 2012",
+                "Sept 2012",
+                "Oct 2012",
+                "Nov 2012",
+                "Dec 2012",
+                "Jan 2013",
+                "Feb 2013",
+                "Mar 2013",
+                "Apr 2013",
+                "May 2013",
+                "Jun 2013",
+                "Jul 2013",
+                "Aug 2013",
+                "Sept 2013",
+                "Oct 2013",
+                "Nov 2013",
+                "Dec 2013",
             ];
 
-            vt.chartLineSeries = ["New Users", "Global Quizz Results in %"];
+            vt.chartLineSeries = [];
 
             vt.chartLineCharts = [];
 
@@ -171,12 +191,23 @@
             $http(
                 {
                     method: 'GET',
-                    url: 'http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2'
+                    url: './data/valueLost.js'
                 })
                 .then(function (data) {
-                    var array = data.data // TODO: not sure why the $http returns a different object here than in the tutorial.  Investigate later.
+                    var array = data.data
+                    // populate chartLineLabels
                     angular.forEach(array, function (chartLineData) {
-                        vt.chartLineCharts.push(chartLineData.chart);
+                        // populate chartLineSeries
+                        vt.chartLineSeries.push(chartLineData.Airline)
+                        sortedObjectKeys = Object.keys(chartLineData).sort();
+                        sortedObjectKeys.pop(); //this removes Airline from the array.
+                        let thisAirlineArray = []
+                        angular.forEach(sortedObjectKeys, function(key){
+                            thisAirlineArray.push(chartLineData[key]);
+                        })
+
+                        vt.chartLineCharts.push(thisAirlineArray);
+
                     });
                 });
 
@@ -231,74 +262,7 @@
                 vt.barChartColours = ["#494750", "#cc3321"];
 
             });
-
-        app.controller("uploadData", [
-                "$scope",
-                "readFileData",
-                function ($scope, readFileData) {
-                    $scope.fileDataObj = {};
-
-                    $scope.uploadFile = function () {
-                        if ($scope.fileContent) {
-                            $scope.fileDataObj = readFileData.processData($scope.fileContent);
-
-                            $scope.fileData = JSON.stringify($scope.fileDataObj);
-                        }
-                    };
-                }
-            ])
-
-        app.directive("fileReaderDirective", function () {
-                return {
-                    restrict: "A",
-                    scope: {
-                        fileReaderDirective: "="
-                    },
-                    link: function (scope, element) {
-                        $(element).on("change", function (changeEvent) {
-                            var files = changeEvent.target.files;
-                            if (files.length) {
-                                var r = new FileReader();
-                                r.onload = function (e) {
-                                    var contents = e.target.result;
-                                    scope.$apply(function () {
-                                        scope.fileReaderDirective = contents;
-                                    });
-                                };
-                                r.readAsText(files[0]);
-                            }
-                        });
-                    }
-                };
-            })
-
-        app.factory("readFileData", function () {
-                return {
-                    processData: function (csv_data) {
-                        var record = csv_data.split(/\r\n|\n/);
-                        var headers = record[0].split(",");
-                        var lines = [];
-                        var json = {};
-
-                        for (var i = 0; i < record.length; i++) {
-                            var data = record[i].split(",");
-                            if (data.length == headers.length) {
-                                var tarr = [];
-                                for (var j = 0; j < headers.length; j++) {
-                                    tarr.push(data[j]);
-                                }
-                                lines.push(tarr);
-                            }
-                        }
-
-                        for (var k = 0; k < lines.length; ++k) {
-                            json[k] = lines[k];
-                        }
-                        return json;
-                    }
-                };
-            });
-        
+       
     </script>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
