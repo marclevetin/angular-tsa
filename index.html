@@ -195,20 +195,45 @@
                 })
                 .then(function (data) {
                     var array = data.data
-                    // populate chartLineLabels
+                    // prepares average series
+                    var averageSeriesName = "Average";
+                    var averageDataObject = {};
+
                     angular.forEach(array, function (chartLineData) {
-                        // populate chartLineSeries
-                        vt.chartLineSeries.push(chartLineData.Airline)
+                        
+                        // adds airline to chart series
+                        vt.chartLineSeries.push(chartLineData.Airline);
+
+                        //this removes Airline from the array.
                         sortedObjectKeys = Object.keys(chartLineData).sort();
-                        sortedObjectKeys.pop(); //this removes Airline from the array.
-                        let thisAirlineArray = []
+                        sortedObjectKeys.pop(); 
+
+                        // assembles data for the Airline
+                        let thisAirlineArray = [];
                         angular.forEach(sortedObjectKeys, function(key){
+                            // average series
+                            if (averageDataObject[key] === undefined) {
+                                averageDataObject[key] = chartLineData[key];
+                            } else {
+                                averageDataObject[key] += chartLineData[key];
+                            }
+
+                            //  airline series
                             thisAirlineArray.push(chartLineData[key]);
                         })
-
+                        
                         vt.chartLineCharts.push(thisAirlineArray);
-
                     });
+                    // adds average series
+                    vt.chartLineSeries.push(averageSeriesName);
+
+                    var averageDataArray = Object.values(averageDataObject);
+
+                    angular.forEach(averageDataArray, function(value, key) {
+                        averageDataArray[key] = value / vt.chartLineSeries.length - 1;
+                    })
+
+                    vt.chartLineCharts.push(averageDataArray);
                 });
 
             vt.chartLineOptions = {
@@ -217,7 +242,6 @@
             };
 
             vt.chartLineColours = ["#494750", "#cc3321"];
-
         });
 
         app.controller('barchart', function ($scope, $http) {
