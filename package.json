@@ -10,6 +10,7 @@
   "author": "Marc Levetin",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.6.10"
+    "angular": "^1.6.10",
+    "materialize-css": "^1.0.0-beta"
   }
 }
