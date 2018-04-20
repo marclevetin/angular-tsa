@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <div class="container">
 <!-- Begin navigation bar -->
     <nav>
         <div class="nav-wrapper" ng-controller="nav">
@@ -53,15 +54,22 @@
         </li>
     </ul>    
 <!-- End navigation bar -->
-    <div ng-controller="graphs as vt">
-        <p>graphs</p>
-        {{test2}}
+<div class="row">
+    <div class="col s12">
+        <div ng-controller="graphs as vt">
+            <h2>Value Lost per Month</h2>
+            <p>This chart shows the total value lost per month, by airline.  The average monthly loss is included for context.</p>
+            {{test2}}
 
-        <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
-            chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
-        </canvas>
+            <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
+                chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+            </canvas>
+            <div class="divider"></div>
+        </div>
     </div>
+</div>
     <p>footer</p>
+    </div>
     
 <!-- Javascript files -->
     <script src="./node_modules/angular/angular.js"></script>
