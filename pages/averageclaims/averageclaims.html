@@ -1,0 +1,18 @@
+<!-- Average Claims graph -->
+<div class="row">
+    <div class="col s12">
+        <div ng-controller="barchart as vt">
+            <h2>Average Claims per Month</h2>
+            <p>This chart shows the average claim per month, by airline code. Each bar shows the arithmatic mean and standard
+                deviation.</p>
+            {{test2}}
+
+            <canvas chart-options="vt.barChartOptions" id="bar" class="chart chart-bar" chart-data="vt.barChartCharts" chart-labels="vt.barChartLabels"
+                chart-legend="true" chart-series="vt.barChartSeries" chart-colours="vt.barChartColours">
+            </canvas>
+            <div class="divider"></div>
+        </div>
+    </div>
+</div>
+
+<!-- End Average Claims graph -->

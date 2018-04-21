@@ -1,0 +1,18 @@
+{
+  "name": "angular-tsa",
+  "version": "1.0.0",
+  "description": "Small application that graphs TSA Claims data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Marc Levetin",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.10",
+    "angular-chart.js": "^1.1.1",
+    "angular-route": "^1.6.10",
+    "materialize-css": "^1.0.0-beta"
+  }
+}
