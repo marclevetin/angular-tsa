@@ -112,4 +112,8 @@ app.controller("linegraphs", function($scope, $http) {
   };
 
   vt.chartLineColours = ["#494750", "#cc3321"];
+
+  $scope.form = {
+    "year": "all"
+  }
 });

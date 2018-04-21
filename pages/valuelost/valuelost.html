@@ -4,9 +4,32 @@
         <div ng-controller="linegraphs as vt">
             <h2>Value Lost per Month</h2>
             <p>This chart shows the total value lost per month, by airline. The average monthly loss is included for context.</p>
-            {{test2}}
-
-
+            
+            <p>filter by year</p>
+            <p>Current selection: {{form}}</p>
+            <div>
+                <label>
+                    <input type="radio" ng-model="form.year" value="all">
+                    <span>All</span>
+                </label>
+                <label>
+                    <input type="radio" ng-model="form.year" value="2010">
+                    <span>2010</span>
+                </label>
+                <label>
+                    <input type="radio" ng-model="form.year" value="2011">
+                    <span>2011</span>
+                </label>
+                <label>
+                    <input type="radio" ng-model="form.year" value="2012">
+                    <span>2012</span>
+                </label>
+                <label>
+                    <input type="radio" ng-model="form.year" value="2013">
+                    <span>2013</span>
+                </label>
+            </div>
+            <div class="divider"></div>
             <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
                 chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
             </canvas>
