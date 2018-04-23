@@ -9,29 +9,67 @@
             <p>Current selection: {{form}}</p>
             <div>
                 <label>
-                    <input type="radio" ng-model="form.year" value="all">
+                    <input type="radio" ng-model="form.year" value="all" ng-change="yearChange('all')">
                     <span>All</span>
                 </label>
                 <label>
-                    <input type="radio" ng-model="form.year" value="2010">
+                    <input type="radio" ng-model="form.year" value="2010" ng-change="yearChange('2010')">
                     <span>2010</span>
                 </label>
                 <label>
-                    <input type="radio" ng-model="form.year" value="2011">
+                    <input type="radio" ng-model="form.year" value="2011" ng-change="yearChange('2011')">
                     <span>2011</span>
                 </label>
                 <label>
-                    <input type="radio" ng-model="form.year" value="2012">
+                    <input type="radio" ng-model="form.year" value="2012" ng-change="yearChange('2012')">
                     <span>2012</span>
                 </label>
                 <label>
-                    <input type="radio" ng-model="form.year" value="2013">
+                    <input type="radio" ng-model="form.year" value="2013" ng-change="yearChange('2013')">
                     <span>2013</span>
                 </label>
             </div>
+
+
+            <div class="col s1" ng-repeat="code in airports">
+                <label>
+                    <input type="checkbox" ng-checked="all" ng-model="clicked" ng-change="change()" value={{code}} />
+                    <span>{{code}}</span>
+                </label>
+            </div>
+            <p>Selected airlines</p>
+            <div class="row">
+                <div class="col s3" ng-repeat="airline in vt.chartLineSeries track by $index">
+                    <div>
+                        <label>
+                            <input type="checkbox" ng-model="clicked" ng-change="toggleAirline(airline)" value={{airline}}/>
+                            <span>{{airline}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+<div>
+
+    {{vt.chartLineLabels | filter: form.year : compareLineLabels}}
+<p>hi</p>
+    {{vt.chartLineLabels}}
+    Labels : done<br>
+     data : tbd
+    <br>
+     Series : tbd
+    <br>
+</div>
+
             <div class="divider"></div>
-            <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels"
-                chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+            <canvas 
+                chart-options="vt.chartLineOptions" 
+                id="line" class="chart chart-line" 
+                chart-data="vt.chartLineCharts" 
+                chart-labels="vt.chartLineLabels"
+                chart-legend="true" 
+                chart-series="vt.chartLineSeries" 
+                chart-colours="vt.chartLineColours"
+            >
             </canvas>
             <div class="divider"></div>
         </div>

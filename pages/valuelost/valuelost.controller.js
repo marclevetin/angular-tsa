@@ -1,10 +1,9 @@
 app.controller("linegraphs", function($scope, $http) {
-  $scope.test2 = "Remember to remove this.";
 
   var vt = this;
 
   // Line Chart
-
+  // initial chart parameters
   vt.chartLineLabels = [
     "Jan 2010",
     "Feb 2010",
@@ -57,10 +56,11 @@ app.controller("linegraphs", function($scope, $http) {
   ];
 
   vt.chartLineSeries = [];
-
   vt.chartLineCharts = [];
+  vt.chartLineOptions = { maintainAspectRatio: false, responsive: true };
+  vt.chartLineColours = ["#494750", "#cc3321"];
 
-  // API Request
+  // "API" Request
   $http({
     method: "GET",
     url: "./data/valueLost.js"
@@ -106,14 +106,49 @@ app.controller("linegraphs", function($scope, $http) {
     vt.chartLineCharts.push(averageDataArray);
   });
 
-  vt.chartLineOptions = {
-    maintainAspectRatio: false,
-    responsive: true
-  };
-
-  vt.chartLineColours = ["#494750", "#cc3321"];
-
+ 
+// data parameters
   $scope.form = {
-    "year": "all"
+    "year": "all",
+    "includeAverage": true,
+    "selectedAirlines": [] // maybe start the graph out empty?
   }
+
+  $scope.compareLineLabels = function(input){
+    var year = input.split(" ")[1];
+
+    if ($scope.form.year === "2010") {
+      return angular.equals(year, "2010");
+    } else if ($scope.form.year === "2011") {
+      return angular.equals(year, "2011");
+    } else if ($scope.form.year === "2012") {
+      return angular.equals(year, "2012");
+    } else if ($scope.form.year === "2013") {
+      return angular.equals(year, "2013");
+    }
+    return true;
+  }
+
+  $scope.compareLineData = function(input) {
+    var year = input.split(" ")[1];
+    console.log(year);
+    return true;
+  }
+
+  $scope.toggleAirline = function(airline) {
+    var index = $scope.form.selectedAirlines.indexOf(airline);
+
+    if (index === -1) {
+      $scope.form.selectedAirlines.push(airline);
+    } else {
+      $scope.form.selectedAirlines.splice(index, 1);
+    }
+  }
+
+  $scope.clicked = false;
+
+  $scope.yearChange = function(year, $scope) {
+    debugger;
+  }
+
 });
